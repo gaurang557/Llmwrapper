@@ -1,3 +1,57 @@
 spring:
   application:
     name: llmwrapper
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/llmwrapper}
+    username: ${DB_USERNAME:llmwrapper}
+    password: ${DB_PASSWORD:llmwrapper}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    open-in-view: false
+
+server:
+  port: ${SERVER_PORT:8080}
+
+jwt:
+  secret: ${JWT_SECRET:dev-secret-change-me-in-production-must-be-at-least-32-bytes-long-for-hs256}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+llm:
+  default-provider: openai
+  request-timeout-seconds: 60
+  providers:
+    openai:
+      enabled: true
+      api-key: ${OPENAI_API_KEY:}
+      base-url: https://api.openai.com/v1
+      default-model: gpt-4o-mini
+      anonymous-limit: 5
+      total-limit: 1000
+    anthropic:
+      enabled: true
+      api-key: ${ANTHROPIC_API_KEY:}
+      base-url: https://api.anthropic.com/v1
+      default-model: claude-3-5-haiku-latest
+      anonymous-limit: 0
+      total-limit: 500
+    gemini:
+      enabled: true
+      api-key: ${GEMINI_API_KEY:}
+      base-url: https://generativelanguage.googleapis.com/v1beta
+      default-model: gemini-1.5-flash
+      anonymous-limit: 3
+      total-limit: 500
+
+logging:
+  level:
+    com.gaurang.llmwrapper: INFO
+    org.springframework.security: WARN
