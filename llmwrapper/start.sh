@@ -1,0 +1,4 @@
+set -a
+. ./.env
+set +a
+mvn spring-boot:run

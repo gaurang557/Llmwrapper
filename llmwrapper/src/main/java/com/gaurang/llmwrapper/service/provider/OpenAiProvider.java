@@ -20,7 +20,11 @@ public class OpenAiProvider extends AbstractLlmProvider {
     private final RestClient restClient;
 
     public OpenAiProvider(LlmProperties.ProviderConfig config, RestClient restClient) {
-        super("openai", config);
+        this("openai", config, restClient);
+    }
+
+    public OpenAiProvider(String providerName, LlmProperties.ProviderConfig config, RestClient restClient) {
+        super(providerName, config);
         this.restClient = restClient;
     }
 
@@ -87,7 +91,7 @@ public class OpenAiProvider extends AbstractLlmProvider {
         long completion = numberOrZero(usage, "completion_tokens");
         long total = numberOrZero(usage, "total_tokens");
         if (total == 0) total = prompt + completion;
-        return new ChatResponse("openai", model, content, prompt, completion, total);
+        return new ChatResponse(providerName, model, content, prompt, completion, total);
     }
 
     static long numberOrZero(Map<String, Object> map, String key) {

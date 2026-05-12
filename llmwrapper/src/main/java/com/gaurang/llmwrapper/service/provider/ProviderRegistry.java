@@ -25,6 +25,7 @@ public class ProviderRegistry {
                 case "openai" -> new OpenAiProvider(cfg, llmRestClient);
                 case "anthropic" -> new AnthropicProvider(cfg, llmRestClient);
                 case "gemini" -> new GeminiProvider(cfg, llmRestClient);
+                case "groq" -> new OpenAiProvider("groq", cfg, llmRestClient);
                 default -> null;
             };
             if (provider != null) providers.put(key, provider);
